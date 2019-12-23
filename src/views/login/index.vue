@@ -12,10 +12,13 @@
             placeholder="请输入密码"
             style="width:240px;marginRight:10px;"
           ></el-input>
-        <el-button style="width:110px">验证码</el-button>
+          <el-button style="width:110px">验证码</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" style="width:100%;marginTop:30px" >登录</el-button>
+          <el-checkbox :value="true">我已阅读并同意用户协议和隐私条款</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" style="width:100%;">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
