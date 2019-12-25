@@ -2,14 +2,13 @@
   <div class="container-login">
     <el-card class="container-card">
       <img src="../../assets/logo_index.png" alt />
-      <el-form :model="loginform">
-        <el-form-item>
-          <el-input v-model="loginform.name" placeholder="请输入用户名"></el-input>
+      <el-form :model="loginform" :rules="loginRules" ref="loginform">
+        <el-form-item prop="mobile">
+          <el-input v-model="loginform.mobile"></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="code">
           <el-input
-            v-model="loginform.psd"
-            placeholder="请输入密码"
+            v-model="loginform.code"
             style="width:240px;marginRight:10px;"
           ></el-input>
           <el-button style="width:110px">验证码</el-button>
@@ -18,7 +17,7 @@
           <el-checkbox :value="true">我已阅读并同意用户协议和隐私条款</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" style="width:100%;">登录</el-button>
+          <el-button type="primary" style="width:100%;" @click="login()">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -28,11 +27,56 @@
 <script>
 export default {
   data () {
+    const validatorPass = (rule, value, callback) => {
+      if (!/^1[3-9]\d{9}/.test(value)) {
+        return (callback(new Error('输入有误')))
+      }
+      return callback()
+    }
     return {
       loginform: {
-        name: '',
-        psd: ''
+        mobile: '',
+        code: ''
+      },
+      loginRules: {
+        mobile: [
+          {
+            required: true,
+            message: '请输入手机号',
+            trigger: 'blur'
+          },
+          {
+            validator: validatorPass,
+            trigger: 'change'
+          }
+        ],
+        code: [
+          {
+            required: true,
+            message: '请输入六位验证码',
+            trigger: 'blur'
+          },
+          {
+            len: 6,
+            message: '请输入六位验证码',
+            trigger: 'blur'
+          }
+        ]
       }
+    }
+  },
+  methods: {
+    login () {
+      this.$refs.loginform.validate(valid => {
+        if (valid) {
+          this.$http.post('http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+            this.loginform).then(res => {
+            this.$router.push('/')
+          }).catch(() => {
+            this.$message.error('手机号或验证码错误')
+          })
+        }
+      })
     }
   }
 }

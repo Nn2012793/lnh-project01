@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-<router-view></router-view>
+  <div>
+      评论管理
   </div>
 </template>
 

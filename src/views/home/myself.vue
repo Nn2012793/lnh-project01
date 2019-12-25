@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-<router-view></router-view>
+  <div>
+      个人管理
   </div>
 </template>
 
