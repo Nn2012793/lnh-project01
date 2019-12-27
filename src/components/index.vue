@@ -1,123 +1,131 @@
 <template>
-  <div class="container-home">
-    <el-container style="height: 650px; border: 1px solid #eee;">
-      <el-aside width="200px" style="background-color: #002033">
-        <el-menu>
-          <el-menu-item-group style="background-color: #002033;">
-            <img src="../assets/logo_admin.png" style="width:180px" />
-            <el-menu-item style="color:lightgreen" index="1-1">
-              <li class="el-icon-s-home"></li>
-              <router-link to="/">首页</router-link>
-            </el-menu-item>
-            <el-menu-item style="color:lightgreen" index="1-2">
-              <li class="el-icon-document"></li>
-              <router-link to="/content">内容管理</router-link>
-            </el-menu-item>
-            <el-menu-item style="color:lightgreen" index="1-3">
-              <li class="el-icon-picture-outline"></li>
-              <router-link to="/sucai">素材管理</router-link>
-            </el-menu-item>
-            <el-menu-item style="color:lightgreen" index="1-4">
-              <li class="el-icon-s-promotion"></li>
-              <router-link to="/publish">发布文章</router-link>
-            </el-menu-item>
-            <el-menu-item style="color:lightgreen" index="1-5">
-              <li class="el-icon-chat-dot-round"></li>
-              <router-link to="/comment">评论管理</router-link>
-            </el-menu-item>
-            <el-menu-item style="color:lightgreen" index="1-6">
-              <li class="el-icon-present"></li>
-              <router-link to="/fans">粉丝管理</router-link>
-            </el-menu-item>
-            <el-menu-item style="color:lightgreen" index="1-7">
-              <li class="el-icon-setting"></li>
-              <router-link to="myself">个人设置</router-link>
-            </el-menu-item>
-          </el-menu-item-group>
-          <!-- <el-submenu index="1-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="1-4-1">选项4-1</el-menu-item>
-          </el-submenu>-->
-          <!-- </el-submenu> -->
-        </el-menu>
-      </el-aside>
+  <el-container class="container-struct">
+    <el-aside :width="flag?'200px':'64px'" class="container-aside">
+      <div class="logo" :class="{minLogo:!flag}"></div>
+      <el-menu
+        default-active="/"
+        background-color="#002033"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+        :collapse="!flag"
+        :collapse-transition="false"
+        router
+      >
+        <el-menu-item index="/">
+          <i class="el-icon-s-home"></i>
+          <span slot="title">首页</span>
+        </el-menu-item>
+        <el-menu-item index="/content">
+          <i class="el-icon-document"></i>
+          <span slot="title">内容管理</span>
+        </el-menu-item>
+        <el-menu-item index="/sucai">
+          <i class="el-icon-picture"></i>
+          <span slot="title">素材管理</span>
+        </el-menu-item>
+        <el-menu-item index="/publish">
+          <i class="el-icon-s-promotion"></i>
+          <span slot="title">发布文字</span>
+        </el-menu-item>
+        <el-menu-item index="/comment">
+          <i class="el-icon-chat-dot-round"></i>
+          <span slot="title">评论管理</span>
+        </el-menu-item>
+        <el-menu-item index="/fans">
+          <i class="el-icon-present"></i>
+          <span slot="title">粉丝管理</span>
+        </el-menu-item>
+        <el-menu-item index="/myself">
+          <i class="el-icon-setting"></i>
+          <span slot="title">个人设置</span>
+        </el-menu-item>
+      </el-menu>
+    </el-aside>
 
-      <el-container>
-        <el-header style="font-size: 16px; font-weight : 600">
-          <span style="float:left">
-            <i class="el-icon-s-unfold" style="margin-right: 15px"></i>
-            <span>江苏传智播客</span>
+    <el-container class="container-right">
+      <el-header class="container-header">
+        <span class="el-icon-s-fold icon" @click="flag=!flag"></span>
+        <span class="icon-right">江苏传智播客科技教育有限公司</span>
+        <el-dropdown class="my-dropdown">
+          <span class="el-dropdown-link">
+            <img class="user-icon" src="../assets/avatar.jpg" alt />
+            <span class="user-name">用户名称</span>
+            <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
-          <el-dropdown class="mydropdown">
-            <span>
-              <img src="../assets/avatar.jpg" alt />
-              <span>刘玉宝</span>
-              <i class="el-icon-arrow-down" style="margin-right: 15px"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-switch-button">退出登录</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-header>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-unlock">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </el-header>
 
-        <el-main class="little_window">
-          <!-- <el-table>
-            <el-table-column label="日期" width="140"></el-table-column>
-            <el-table-column label="姓名" width="120"></el-table-column>
-            <el-table-column label="地址"></el-table-column>
-          </el-table>-->
-          <router-view></router-view>
-          <router-view name="home"></router-view>
-        </el-main>
-      </el-container>
+      <el-main class="container-main">
+        <router-view></router-view>
+        <router-view name="home"></router-view>
+      </el-main>
     </el-container>
-  </div>
+  </el-container>
 </template>
 
 <script>
 export default {
   data () {
-    return {}
+    return {
+      flag: true
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.container-home {
+.container-struct {
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  a {
-    text-decoration: none;
-    color: lightgreen;
+  .container-aside {
+    height: 100%;
+    background-color: #002033;
+    .logo {
+      width: 100%;
+      height: 60px;
+      background: url(../assets/logo_admin.png) no-repeat center / 140px auto;
+    }
+    .el-menu {
+      border-right: 0;
+    }
+    .minLogo {
+      background-image: url(../assets/logo_admin_01.png);
+      background-size: 36px auto;
+    }
   }
-}
-.el-header {
-  background-color: #b3c0d1;
-  color: #333;
-  line-height: 60px;
-}
-
-.el-aside {
-  color: #333;
-}
-
-.little_window {
-  background: url(../assets/welcome.jpg) no-repeat center / contain;
-}
-.mydropdown {
-  float: right;
-  img {
-    vertical-align: middle;
+  .container-header {
+    border-bottom: 1px solid #ddd;
+    line-height: 60px;
+    .icon {
+      font-size: 24px;
+      vertical-align: middle;
+    }
+    .icon-right {
+      font-size: 16px;
+      vertical-align: middle;
+      padding-left: 10px;
+    }
+    .my-dropdown {
+      float: right;
+      .user-icon {
+        width: 30px;
+        height: 30px;
+        vertical-align: middle;
+      }
+      .user-name {
+        font-size: 16px;
+        color: #333;
+        padding-left: 10px;
+        vertical-align: middle;
+      }
+    }
   }
-  span {
-    padding: 0 6px;
-  }
-}
-.router-link-active {
-  color: lightblue;
 }
 </style>

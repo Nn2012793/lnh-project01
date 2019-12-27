@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import store from '@/store'
+
 export default {
   data () {
     const validatorPass = (rule, value, callback) => {
@@ -35,8 +37,8 @@ export default {
     }
     return {
       loginform: {
-        mobile: '',
-        code: ''
+        mobile: '13911111111',
+        code: '246810'
       },
       loginRules: {
         mobile: [
@@ -69,10 +71,16 @@ export default {
     login () {
       this.$refs.loginform.validate(valid => {
         if (valid) {
-          this.$http.post('http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+          this.$http.post('authorizations',
             this.loginform).then(res => {
+            // 登录成功
+            // res 是响应对象  res.data 是响应主体 将来会使用
+            // res.data.data 就是用户信息
+            // 存储用户信息
+            store.setUser(res.data.data)
+            // 直接跳转首页
             this.$router.push('/')
-          }).catch(() => {
+          }).catch(e => {
             this.$message.error('手机号或验证码错误')
           })
         }

@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 import Login from '@/views/login'
+
 import Index from '@/components'
+
 import Home from '@/views/home'
 import Comment from '@/views/home/comment'
 import Content from '@/views/home/content'
@@ -9,8 +12,12 @@ import Fans from '@/views/home/fans'
 import Publish from '@/views/home/publish'
 import Sucai from '@/views/home/sucai'
 import Myself from '@/views/home/myself'
+import Notfound from '@/views/home/404'
+
+import store from '@/store'
 
 Vue.use(VueRouter)
+
 const router = new VueRouter({
   routes: [
     {
@@ -51,8 +58,22 @@ const router = new VueRouter({
           component: Publish
         }
       ]
+    },
+    {
+      path: '*',
+      component: Notfound
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  // to 去哪里
+  // from 来自哪里
+  // next 放行|指定跳转路由
+  // - 判断如果是除去登录页面外其他的路由且当前没有登录，拦截到登录。
+  if (to.path !== '/login' && !store.getUser().token) return next('/login')
+  // - 其他情况都是放行。
+  next()
 })
 
 export default router
