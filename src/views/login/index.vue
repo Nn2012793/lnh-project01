@@ -69,20 +69,13 @@ export default {
   },
   methods: {
     login () {
-      this.$refs.loginform.validate(valid => {
-        if (valid) {
-          this.$http.post('authorizations',
-            this.loginform).then(res => {
-            // 登录成功
-            // res 是响应对象  res.data 是响应主体 将来会使用
-            // res.data.data 就是用户信息
-            // 存储用户信息
-            store.setUser(res.data.data)
-            // 直接跳转首页
-            this.$router.push('/')
-          }).catch(e => {
-            this.$message.error('手机号或验证码错误')
-          })
+      this.$refs.loginform.validate(async valid => {
+        try {
+          const res = await this.$http.post('authorizations', this.loginform)
+          store.setUser(res.data.data)
+          this.$router.push('/')
+        } catch (e) {
+          this.$message.error('手机号或验证码错误')
         }
       })
     }

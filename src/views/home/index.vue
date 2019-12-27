@@ -1,12 +1,6 @@
 <template>
   <div>
-      刘玉宝大傻逼
-      <br>
-      田一禾大天狗
-      <br>
-      刘乃豪超级帅
-      <br>
-      <button @click="get">获取数据</button>
+11111111111
   </div>
 </template>
 

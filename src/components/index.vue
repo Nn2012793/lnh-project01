@@ -3,7 +3,7 @@
     <el-aside :width="flag?'200px':'64px'" class="container-aside">
       <div class="logo" :class="{minLogo:!flag}"></div>
       <el-menu
-        default-active="/"
+        :default-active="$route.path"
         background-color="#002033"
         text-color="#fff"
         active-text-color="#ffd04b"
@@ -48,13 +48,13 @@
         <span class="icon-right">江苏传智播客科技教育有限公司</span>
         <el-dropdown class="my-dropdown">
           <span class="el-dropdown-link">
-            <img class="user-icon" src="../assets/avatar.jpg" alt />
-            <span class="user-name">用户名称</span>
+            <img class="user-icon" :src="photo" alt />
+            <span class="user-name">{{uname}}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-unlock">退出登录</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-setting" @click.native="setting">个人设置</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-unlock" @click.native="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -68,10 +68,22 @@
 </template>
 
 <script>
+import store from '@/store'
 export default {
   data () {
     return {
-      flag: true
+      flag: true,
+      uname: store.getUser().name,
+      photo: store.getUser().photo
+    }
+  },
+  methods: {
+    setting () {
+      this.$router.push('/myself')
+    },
+    logout () {
+      store.delUser()
+      this.$router.push('/')
     }
   }
 }
