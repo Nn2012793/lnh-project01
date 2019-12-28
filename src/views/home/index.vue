@@ -20,5 +20,8 @@ div {
   font-weight: 700;
   text-align: center;
   line-height: 50px;
+  width: 100%;
+  height: 100%;
+  background: url(../../assets/welcome.jpg) no-repeat center / 700px auto;
 }
 </style>
