@@ -6,7 +6,11 @@ import JsonBigint from 'json-bigint'
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0/'
 // axios.defaults.headers.Authorization = `Bearer ${store.getUser().token}`
 axios.defaults.transformResponse = [data => {
-  return JsonBigint.parse(data)
+  try {
+    return JsonBigint.parse(data)
+  } catch (e) {
+    return data
+  }
 }]
 axios.interceptors.request.use(function (config) {
   config.headers.Authorization = `Bearer ${store.getUser().token}`
@@ -14,7 +18,7 @@ axios.interceptors.request.use(function (config) {
 }, error => Promise.reject(error))
 
 axios.interceptors.response.use(res => res, function (err) {
-  if (err.response.status === 401) {
+  if (err.response && err.response.status === 401) {
     router.push('/login')
   }
   return Promise.reject(err)

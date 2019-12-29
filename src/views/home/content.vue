@@ -17,13 +17,13 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道">
-          <el-select v-model="filterParams.channel_id" placeholder="请选择" clearable @change="changeChannel">
-            <el-option
-              v-for="item in options"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
+          <el-select
+            v-model="filterParams.channel_id"
+            placeholder="请选择"
+            clearable
+            @change="changeChannel"
+          >
+            <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="起止时间">
@@ -61,17 +61,25 @@
         <el-table-column prop="title" label="标题"></el-table-column>
         <el-table-column prop="address" label="状态">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status===0"  type="info">草稿</el-tag>
-            <el-tag v-if="scope.row.status===1" >待审核</el-tag>
-            <el-tag v-if="scope.row.status===2"  type="success">审核通过</el-tag>
-            <el-tag v-if="scope.row.status===3"  type="warning">审核失败</el-tag>
-            <el-tag v-if="scope.row.status===4"  type="danger">已删除</el-tag>
+            <el-tag v-if="scope.row.status===0" type="info">草稿</el-tag>
+            <el-tag v-if="scope.row.status===1">待审核</el-tag>
+            <el-tag v-if="scope.row.status===2" type="success">审核通过</el-tag>
+            <el-tag v-if="scope.row.status===3" type="warning">审核失败</el-tag>
+            <el-tag v-if="scope.row.status===4" type="danger">已删除</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="pubdate" label="发布时间"></el-table-column>
-        <el-table-column prop="address" label="操作">
-          <el-button type="primary" icon="el-icon-edit" circle plain></el-button>
-          <el-button type="danger" icon="el-icon-delete" circle plain @click="deletItem"></el-button>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button @click="editArticle(scope.row.id)" type="primary" icon="el-icon-edit" circle plain></el-button>
+            <el-button
+              type="danger"
+              icon="el-icon-delete"
+              circle
+              plain
+              @click="deletItem(scope.row.id)"
+            ></el-button>
+          </template>
         </el-table-column>
       </el-table>
       <el-pagination
@@ -79,7 +87,7 @@
         layout="prev, pager, next"
         @current-change="newPage"
         :total="total"
-        :page-size ="filterParams.perpage"
+        :page-size="filterParams.perpage"
         :current-page="filterParams.page"
       ></el-pagination>
     </el-card>
@@ -138,8 +146,17 @@ export default {
     changeChannel (value) {
       if (!value) this.filterParams.channel_id = null
     },
-    deletItem () {
-      console.log(this.articles[0].id.toString())
+    async deletItem (id) {
+      try {
+        await this.$http.delete(`articles/${id}`)
+        this.$message.success('删除成功')
+        this.getArticle()
+      } catch (e) {
+        this.$message.error('删除失败')
+      }
+    },
+    editArticle (id) {
+      this.$router.push(`/publish?id=${id}`)
     }
   }
 }
