@@ -16,16 +16,11 @@
             <el-radio :label="4">已删除</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="频道">
-          <el-select
-            v-model="filterParams.channel_id"
-            placeholder="请选择"
-            clearable
-            @change="changeChannel"
-          >
-            <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
-          </el-select>
-        </el-form-item>
+    <el-form-item label="频道">
+        <!-- 频道组件 -->
+        <!-- <my-channel :value="filterParams.channel_id" @input="filterParams.channel_id=$event"></my-channel> -->
+        <my-channel v-model="filterParams.channel_id"></my-channel>
+    </el-form-item>
         <el-form-item label="起止时间">
           <el-date-picker
             v-model="dateArr"
@@ -113,16 +108,9 @@ export default {
     }
   },
   created () {
-    this.getChannelOptions()
     this.getArticle()
   },
   methods: {
-    async getChannelOptions () {
-      const {
-        data: { data }
-      } = await this.$http.get('channels')
-      this.options = data.channels
-    },
     async getArticle () {
       const {
         data: { data }
@@ -142,9 +130,6 @@ export default {
       if (!value) value = [null, null]
       this.filterParams.begin_pubdate = value[0]
       this.filterParams.end_pubdate = value[1]
-    },
-    changeChannel (value) {
-      if (!value) this.filterParams.channel_id = null
     },
     async deletItem (id) {
       try {

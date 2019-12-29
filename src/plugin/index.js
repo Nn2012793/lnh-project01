@@ -1,7 +1,9 @@
-import Mybread from '@/components/my-bread'
+import MyBread from '@/components/my-bread'
+import MyChannel from '@/components/my-channel'
 
 export default {
   install: Vue => {
-    Vue.component(Mybread.name, Mybread)
+    Vue.component(MyBread.name, MyBread)
+    Vue.component(MyChannel.name, MyChannel)
   }
 }
